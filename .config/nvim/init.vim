@@ -104,6 +104,10 @@ nnoremap <C-_> :call NERDComment(0,"toggle")<CR>
 
 " Toggle cursorbind between 2 windows
 nnoremap <F12> :set crb!<CR><C-w><C-w>:set crb!<CR>
+
+" Edit vimrc
+nnoremap <C-Shift-`> :edit ~/.vimrc<CR>
+
 " Toggle Nerdtree
 map <C-n> :NERDTreeToggle<CR>
 " Open nerdtree on startup if no file or directory provided 
@@ -112,8 +116,11 @@ autocmd StdinReadPre * let s:std_in=1 autocmd VimEnter * if argc() == 0 && !exis
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
 " Source .zshrc on exit if it was modified
 autocmd VimLeavePre .zshrc :!source ~/.zshrc
+" Source vimrc
+autocmd VimLeavePre .vimrc :!so %<CR>
 
 " Ansible/Yaml specific
 autocmd Filetype yaml setlocal et ts=2 ai sw=2 nu sts=0
 
 let g:ackprg = 'ag --nogroup --nocolor --column'
+

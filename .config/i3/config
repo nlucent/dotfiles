@@ -38,11 +38,17 @@ bindsym $mod+Shift+q kill
 bindsym $mod+d exec "rofi -combi -modi window,drun,ssh -theme Pop-Dark -show combi"
 bindsym $mod+b exec "buku_run"
 
-# Control active window with arrows
+# Control active window with Vi keys
 bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
+# Control active window with arrows
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
 
 # move focused window
 bindsym $mod+Shift+h move left

@@ -1,25 +1,41 @@
 " vim-plugs
 call plug#begin('~/.config/nvim/plugged')
+" Dark theme
 Plug 'joshdick/onedark.vim'
+" GitGutter
 Plug 'airblade/vim-gitgutter'
+" Python Highlighting
 Plug 'numirias/semshi'
+
 Plug 'zenbro/mirror.vim'
+" Golang
 Plug 'fatih/vim-go'
+" Code completion
 Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+" Golang Autocompletion
 Plug 'mdempsky/gocode', { 'rtp': 'nvim', 'do': '~/.local/share/nvim/plugged/gocode/nvim/symlink.sh' }
-Plug 'scrooloose/nerdtree'
+" Code commenter
 Plug 'scrooloose/nerdcommenter'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'severin-lemaignan/vim-minimap'
-Plug 'tpope/vim-fugitive'
+" Status/Tabline
 Plug 'vim-airline/vim-airline'
+" Tabline Theme
 Plug 'vim-airline/vim-airline-themes'
+" Ansible
 Plug 'pearofducks/ansible-vim'
+" Display indentation lines
 Plug 'Yggdroot/indentLine'
+" Vim TMUX
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'mileszs/ack.vim'
+
+"Plug 'mileszs/ack.vim'
+" Autocomplete delimiters
 Plug 'Raimondi/delimitMate'
-Plug 'tpope/vim-fugitive'
+" Fuzzy Finder
+Plug 'junegunn/fzf.vim'
+Plug '/usr/bin/fzf'
+" Snippets
+Plug 'SirVer/ultisnips'
+
 call plug#end()
 
 " OneDark configuration
@@ -40,8 +56,6 @@ colorscheme onedark
 
 let g:onedark_hide_endofbuffer=1
 let g:airline_theme='onedark'
-
-let mapleader = ","         " Use , instead of \
 
 " Enable syntax
 syntax enable
@@ -82,8 +96,7 @@ set ruler                   " Show Column
 set nowrapscan              " Fix long line cursor control
 set laststatus=2            " Always show status line
 set shell=/usr/bin/zsh      " Manually set shell
-inoremap jj <ESC>           " Remap esc
-nnoremap <space> za         " Un/Fold code
+
 " Clear highlight with ,<space>
 nnoremap <leader><space> :noh<cr> 
 nnoremap <tab> %            " Tab to opposite brackets
@@ -108,19 +121,19 @@ nnoremap <F12> :set crb!<CR><C-w><C-w>:set crb!<CR>
 " Edit vimrc
 nnoremap <C-Shift-`> :edit ~/.vimrc<CR>
 
-" Toggle Nerdtree
-map <C-n> :NERDTreeToggle<CR>
-" Open nerdtree on startup if no file or directory provided 
-autocmd StdinReadPre * let s:std_in=1 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-" Open Nerdtree when if I close last open window
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+" sudo write
+cmap w!! w !sudo tee > /dev/null %
+
 " Source .zshrc on exit if it was modified
-autocmd VimLeavePre .zshrc :!source ~/.zshrc
+autocmd BufWritePost ~/.zshrc :!source ~/.zshrc
 " Source vimrc
-autocmd VimLeavePre .vimrc :!so %<CR>
+autocmd BufWritePost ~/$MYVIMRC source %<CR>
 
 " Ansible/Yaml specific
 autocmd Filetype yaml setlocal et ts=2 ai sw=2 nu sts=0
 
 let g:ackprg = 'ag --nogroup --nocolor --column'
+let g:UltiSnipsExpandTrigger = "<C-j>"
+let g:UltiSnipsJumpForwardTrigger = "<C-j>"
+let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
 

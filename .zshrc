@@ -67,7 +67,7 @@ plugins=(git archlinux golang)
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-
+unsetopt BEEP
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -85,6 +85,8 @@ export LANG=en_US
 
 # ssh
  export SSH_KEY_PATH="~/.ssh/rsa_id"
+# Terminal
+export TERMINAL=/usr/bin/st
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -95,33 +97,43 @@ export LANG=en_US
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# Vi key bindings
-bindkey -v
-
 # Aliases
 alias vi="nvim"
 alias vim="nvim"
 alias flash-kb="cd ~/code/qmk_firmware && util/docker_build.sh massdrop/ctrl:default && sudo ./mdloader_linux --first --download massdrop_ctrl_default.bin --restart"
-alias mom-vpn="sudo openvpn --config ~/.ovpn/mom.ovpn"
 alias rezsh="source ~/.zshrc"
 alias edzsh="nvim ~/.zshrc"
 alias edi3="nvim ~/.config/i3/config"
 alias edvim="nvim ~/.vimrc"
+alias breakssh="echo enter tilde ."
 
 ## Functions
 cheat () {
     curl http://cht.sh/$1
 }
 
-syncset () {
-    rsync -zavh ~/.oh-my-zsh -e ssh prod:~
-    rsync -zavh ~/.oh-my-zsh -e ssh archprod:~
-    rsync -zavh ~/.zshrc -e ssh prod:~
-    rsync -zavh ~/.zshrc -e ssh archprod:~
-    rsync -zavh ~/.config/nvim -e ssh archprod:~/.config
-    rsync -zavh ~/.config/nvim -e ssh prod:~/.config
-    rsync -zavh ~/.tmux* -e ssh archprod:~
-    rsync -zavh ~/.tmux* -e ssh prod:~
+vimgolf () {
+    docker run --rm -it -e "key=$(cat ~/.vimgolf)" kramos/vimgolf $1
 }
 
+rpush () {
+    rsync -zavh ~/.oh-my-zsh -e ssh $1:~
+    rsync -zavh ~/.zshrc -e ssh $1:~
+    rsync -zavh ~/.config/nvim -e ssh $1:~/.config
+    rsync -zavh ~/.tmux* -e ssh $1:~
+    if [[ "${1}" == "quizboy" ]]
+    then 
+        rsync -zavh ~/.dwarffortress -e ssh $1:~
+    fi
+}
+
+scan () {
+    scanimage --device "$(cat ~/.scanner)" --format=jpeg > $1
+}
+
+rpull () {
+    rsync -zavh --exclude .oh-my-zsh/log/ --exclude .asound* --exclude .surf --exclude .mozilla --exclude .config/variety/Downloaded --exclude .bash_history --exclude vmware/  --exclude Mail/ --exclude .cache/ --exclude .config/BraveSoftware --exclude .local/share/Steam --exclude .local/share/Trash --exclude Downloads/ --exclude .ssh -e ssh nlucent@$1:~/ ~
+   source ~/.zshrc
+
+}
 
